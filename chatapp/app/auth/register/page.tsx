@@ -1,5 +1,7 @@
 "use client";
 
+import { auth } from "@/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -18,20 +20,20 @@ const Register = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // await createUserWithEmailAndPassword(auth, data.email, data.password)
-    //   .then((userCrendential) => {
-    //     const user = userCrendential.user;
-    //     router.push("/auth/login");
-    //   })
-    //   .catch((error) => {
-    //     // console.error(error);
-    //     // alert(error);
-    //     if (error.code === "auth/email-already-in-use") {
-    //       alert("このメールアドレスはすでに使用されています。");
-    //     } else {
-    //       alert(error.message);
-    //     }
-    //   });
+    await createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCrendential) => {
+        const user = userCrendential.user;
+        //router.push("/auth/login");
+      })
+      .catch((error) => {
+        console.error(error);
+        alert(error);
+        if (error.code === "auth/email-already-in-use") {
+          alert("このメールアドレスはすでに使用されています。");
+        } else {
+          alert(error.message);
+        }
+      });
   };
 
   return (
